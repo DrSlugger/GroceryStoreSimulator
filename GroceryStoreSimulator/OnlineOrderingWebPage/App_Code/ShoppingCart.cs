@@ -8,10 +8,25 @@ using System.Web;
 /// </summary>
 public class ShoppingCart
 {
+    private List<SelectedProduct> selectedProducts;
     public ShoppingCart()
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        
+    }
+
+    public double CalculateTotal()
+    {
+        // TODO: Create CalculateTotal method here
+        return 0;
+    }
+
+    public void RemoveProduct(SelectedProduct product)
+    {
+        // TODO: Create RemoveProduct method here
+    }
+
+    public void AddProduct(SelectedProduct product)
+    {
+        // TODO: Create AddProduct method 
     }
 }
