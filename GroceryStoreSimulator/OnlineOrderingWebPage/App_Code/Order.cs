@@ -21,10 +21,11 @@ public class Order
 
     public double finalPrice { get { return mFinalPrice; } set { mFinalPrice = value; } }
 
-    public Order()
+    public Order(string loyaltyID, Store store, int statusID, DeliveryAddress deliveryAddress)
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        this.loyaltyID = loyaltyID;
+        this.store = store;
+        this.statusID = statusID;
+        this.deliveryAddress = deliveryAddress;
     }
 }

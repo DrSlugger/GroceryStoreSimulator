@@ -18,10 +18,11 @@ public class DeliveryAddress
     public string state { get { return mState; } set { mState = value; } }
     public string zip { get { return mZip; } set { mZip = value; } }
 
-    public DeliveryAddress()
+    public DeliveryAddress(string street, string city, string state, string zip)
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
     }
 }

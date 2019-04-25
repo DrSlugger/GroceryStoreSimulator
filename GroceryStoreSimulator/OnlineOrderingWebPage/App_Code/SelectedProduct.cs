@@ -11,10 +11,12 @@ public class SelectedProduct : Product
     private int mQuantity;
 
     public int quantity { get { return mQuantity; } set { mQuantity = value; } }
-    public SelectedProduct()
+    public SelectedProduct(Product product, int quantity) : base(product.SKU, product.brand, product.description, product.price)
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        this.brand = product.brand;
+        this.SKU = product.SKU;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
     }
 }

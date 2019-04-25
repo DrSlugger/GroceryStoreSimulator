@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 /// <summary>
-/// Summary description for Store
+/// Creates a store object
 /// </summary>
 public class Store
 {
@@ -13,10 +13,9 @@ public class Store
 
     public string storeName { get { return mStoreName; } set { mStoreName = value; } }
     public int storeID { get { return mStoreID; } set { mStoreID= value; } }
-    public Store()
+    public Store(string storeName, int storeID)
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        this.storeName = storeName;
+        this.storeID = storeID;
     }
 }

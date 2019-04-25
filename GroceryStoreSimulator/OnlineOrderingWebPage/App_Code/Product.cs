@@ -17,10 +17,11 @@ public class Product
     public string brand { get { return mBrand; } set { mBrand = value; } }
     public string description{ get { return mDescription; } set { mDescription = value; } }
     public double price { get { return mPrice; } set { mPrice = value; } }
-    public Product()
+    public Product(string SKU, string brand, string description, double price)
     {
-        //
-        // TODO: Add constructor logic here
-        //
+        this.SKU = SKU;
+        this.brand = brand;
+        this.description = description;
+        this.price = price;
     }
 }
