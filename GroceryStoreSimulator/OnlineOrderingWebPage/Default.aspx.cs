@@ -19,13 +19,22 @@ using System.Web.UI.WebControls;
 using OnlineOrder.App_Code;
 
 public partial class _Default : System.Web.UI.Page {
+    /// <summary>
+    /// When the page is loaded, a database connection is opened and the list of stores is populated.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void Page_Load(object sender, EventArgs e)
     {
         OpenConnection();
         PopulateDropDown();
     }
 
-    // Stores the user's Loyalty ID and choice of grocery store.
+    /// <summary>
+    /// Stores the user's Loyalty ID and choice of grocery store.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         Store store = new Store(drpStores.SelectedItem.Text, Convert.ToInt32(drpStores.SelectedItem.Value));
@@ -34,7 +43,9 @@ public partial class _Default : System.Web.UI.Page {
         Response.Redirect("Order.aspx");
     }
 
-    // Populates the listbox that contains a list of all grocery stores.
+    /// <summary>
+    /// Populates the listbox that contains a list of all grocery stores.
+    /// </summary>
     private void PopulateDropDown()
     {
         DataTable stores = new DataTable();
@@ -45,6 +56,7 @@ public partial class _Default : System.Web.UI.Page {
         {
             try
             {
+                // Stores that are permanently closed are not selected.
                 SqlDataAdapter adapter = new SqlDataAdapter("SELECT Store, S.StoreID FROM tStore S INNER JOIN " +
                     "tStoreHistory H ON S.StoreID = h.StoreID INNER JOIN tStoreStatus SS ON H.StoreStatusID = " +
                     "SS.StoreStatusID WHERE IsOpenForBusiness = 1 ORDER BY Store ASC", conn);
