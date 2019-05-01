@@ -1,4 +1,13 @@
-﻿using System;
+﻿/* Authors: Kyle Marler, Evan Batsch
+ * Class: Web Server Application Development
+ * Assignment: Final Project
+ * Date due: 2019-05-01
+ * Description: This class stores a list of selected products. It is used in Order.aspx.
+ * ...It contains methods for calculating the total price of an order, and for adjusting product quantities.
+ * Other: N/A
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -12,6 +21,7 @@ namespace OnlineOrder.App_Code
     {
         private List<SelectedProduct> mSelectedProducts;
 
+        // A list of all products selected by the user.
         public List<SelectedProduct> selectedProducts
         {
             get
@@ -19,10 +29,13 @@ namespace OnlineOrder.App_Code
                 return mSelectedProducts;
             }
         }
+        
         public ShoppingCart()
         {
             mSelectedProducts = new List<SelectedProduct>();
         }
+
+        // The following methods are used in Order.aspx.
 
         public double CalculateTotal()
         {

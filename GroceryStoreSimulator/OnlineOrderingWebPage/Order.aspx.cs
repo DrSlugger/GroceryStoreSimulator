@@ -1,4 +1,17 @@
-﻿using System;
+﻿/* Authors: Kyle Marler, Evan Batsch
+ * Class: Web Server Application Development
+ * Assignment: Final Project
+ * Date due: 2019-05-01
+ * Description: The user is able to select an item from a list of products.
+ * ...One an item is selected, the user can specify a quantity of that item to add to their cart.
+ * ...The total price of the user's order is updated dynamically.
+ * ...The quantity of a selected item can be viewed by clicking on it in the shopping cart listbox.
+ * Other: N/A
+ * Citations: Portions of the database connection code are adapted from Bill Nicholson's GroceryStoreSimulator project.
+ * ...https://github.com/nicomp42/GroceryStoreSimulator
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -16,8 +29,6 @@ public partial class Order : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        //        ShoppingCart cart = new ShoppingCart();
-        //        lbx_Items.Items.Add();
         if (!IsPostBack)
         {
             OpenConnection();
@@ -29,6 +40,7 @@ public partial class Order : System.Web.UI.Page
         }
     }
 
+    // 
     protected void lstCart_SelectedIndexChanged(object sender, EventArgs e)
     {
         string product = lstCart.SelectedItem.Text;
@@ -48,8 +60,6 @@ public partial class Order : System.Web.UI.Page
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         shoppingCart = (ShoppingCart)Session["ShoppingCart"];
-        // Add all of the items in the cart to the order...
-        // ... or whatever the design was.
         Store store = (Store)Session["SelectedStore"];
         string loyalty = (string)Session["LoyaltyNumber"];
         OnlineOrder.App_Code.Order order = new OnlineOrder.App_Code.Order(loyalty, store, 1, shoppingCart.CalculateTotal(), shoppingCart);
@@ -143,6 +153,7 @@ public partial class Order : System.Web.UI.Page
 
         }
     }
+
     private void LoadProducts()
     {
         OpenConnection();
@@ -220,7 +231,6 @@ public partial class Order : System.Web.UI.Page
             shoppingCart.ChangeQuanity(itemToRemove, Convert.ToInt32(tbxQuantity.Text));
         }
     }
-
     
     /// <summary>
     /// This method moves an item from one listbox to another while removing the item from the first one
@@ -238,14 +248,6 @@ public partial class Order : System.Web.UI.Page
             listBoxTwo.SelectedIndex = -1;
         }
     }
-
-    // Add the initial item - you can add this even if the options from the
-    // db were not successfully loaded
-
-    // TODO: Change webconfig.aspx to not display code in errors (debug mode).
-
-    // Functionality to remove an item from the cart?
-
 
     /*
     * Below are methods for the database connection

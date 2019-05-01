@@ -1,4 +1,14 @@
-﻿using System;
+﻿/* Authors: Kyle Marler, Evan Batsch
+ * Class: Web Server Application Development
+ * Assignment: Final Project
+ * Date due: 2019-05-01
+ * Description: The user is able to specify their loyalty number, and select a store to order from.
+ * Other: N/A
+ * Citations: Portions of the database connection code are adapted from Bill Nicholson's GroceryStoreSimulator code.
+ * ...https://github.com/nicomp42/GroceryStoreSimulator
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -13,19 +23,18 @@ public partial class _Default : System.Web.UI.Page {
     {
         OpenConnection();
         PopulateDropDown();
-        //        ShoppingCart cart = new ShoppingCart();
     }
 
+    // Stores the user's Loyalty ID and choice of grocery store.
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
-        //        cart.loyaltyID.set(txt_LoyaltyNumber.Text);
-        //        cart.storeID.set(ddl_Stores.SelectedValue);
         Store store = new Store(drpStores.SelectedItem.Text, Convert.ToInt32(drpStores.SelectedItem.Value));
         Session["SelectedStore"] = store;
         Session["LoyaltyNumber"] = tbxLoyaltyNumber.Text;
         Response.Redirect("Order.aspx");
     }
 
+    // Populates the listbox that contains a list of all grocery stores.
     private void PopulateDropDown()
     {
         DataTable stores = new DataTable();

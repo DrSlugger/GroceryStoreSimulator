@@ -1,4 +1,13 @@
-﻿using System;
+﻿/* Authors: Kyle Marler, Evan Batsch
+ * Class: Web Server Application Development
+ * Assignment: Final Project
+ * Date due: 2019-05-01
+ * Description: This class represents a store, as chosen by the user in Default.aspx.
+ * ...Data stored here is used later on, when the user's order is formed and submitted to the database.
+ * Other: N/A
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

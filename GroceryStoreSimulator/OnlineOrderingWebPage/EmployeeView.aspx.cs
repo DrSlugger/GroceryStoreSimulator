@@ -1,4 +1,13 @@
-﻿using System;
+﻿/* Authors: Kyle Marler, Evan Batsch
+ * Class: Web Server Application Development
+ * Assignment: Final Project
+ * Date due: 2019-05-01
+ * Description: In this view, an employee is able to view and approve pending orders.
+ * ...A list of all orders in the database is displayed as well.
+ * Other: N/A
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -14,11 +23,7 @@ public partial class EmployeeView : System.Web.UI.Page
         // Show pending orders
         conn = (SqlConnection)Session["ConnectionObject"];
         conn.Open();
-    }
 
-    // CheckboxList: select orders, hit submit to remove from list
-    // On submit, change status to "delivered"
-    
-    // Bulleted list: just show a list of all complete orders in database
-    // Loyalty ID, total cost, etc.
+
+    }
 }
