@@ -11,7 +11,7 @@ using OnlineOrder.App_Code;
 public partial class _Default : System.Web.UI.Page {
     protected void Page_Load(object sender, EventArgs e)
     {
-        DBConnection.OpenConnection();
+        OpenConnection();
         PopulateDropDown();
         //        ShoppingCart cart = new ShoppingCart();
     }
@@ -102,6 +102,53 @@ public partial class _Default : System.Web.UI.Page {
             listBoxTwo.Items.Add(itemToAdd);
             listBox.SelectedIndex = -1; // Deselects all items in the two boxes
             listBoxTwo.SelectedIndex = -1;
+        }
+    }
+
+    /*
+     * Below are methods for the database connection
+     */
+
+    /** Read the connection string from the web.config file. 
+    * This is a much more secure way to store sensitive information. Don't hard-code connection information in the source code.
+    * Adapted from http://msdn.microsoft.com/en-us/library/ms178411.aspx
+    */
+    private System.Configuration.ConnectionStringSettings ReadConnectionString()
+    {
+        String strPath;
+        strPath = HttpContext.Current.Request.ApplicationPath + "/web.config";
+        System.Configuration.Configuration rootWebConfig =
+            System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration(strPath);
+
+        System.Configuration.ConnectionStringSettings connString = null;
+        if (rootWebConfig.ConnectionStrings.ConnectionStrings.Count > 0)
+        {
+            connString = rootWebConfig.ConnectionStrings.ConnectionStrings["MarlerKWConnectionString"];
+        }
+        return connString;
+    }
+
+    /**
+    * Open the connection to the database
+    */
+    private void OpenConnection()
+    {
+        System.Configuration.ConnectionStringSettings strConn;
+        strConn = ReadConnectionString();
+        // Console.WriteLine(strConn.ConnectionString);
+
+        System.Data.SqlClient.SqlConnection conn;
+        conn = new System.Data.SqlClient.SqlConnection(strConn.ConnectionString);
+        Session.Add("ConnectionObject", conn);
+        // This could go wrong in so many ways...
+        try
+        {
+            conn.Open();
+        }
+        catch (Exception ex)
+        {
+            // Miserable error handling...
+            Response.Write(ex.Message);
         }
     }
 }

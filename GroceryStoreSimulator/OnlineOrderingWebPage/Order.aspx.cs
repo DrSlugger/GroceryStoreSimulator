@@ -10,11 +10,14 @@ using OnlineOrder.App_Code;
 
 public partial class Order : System.Web.UI.Page
 {
+    private SqlConnection conn;
     protected void Page_Load(object sender, EventArgs e)
     {
-//        ShoppingCart cart = new ShoppingCart();
-//        lbx_Items.Items.Add();
+        //        ShoppingCart cart = new ShoppingCart();
+        //        lbx_Items.Items.Add();
 
+        conn = (SqlConnection)Session["ConnectionObject"];
+        conn.Open();
     }
 
     protected void btn_Submit_Click(object sender, EventArgs e)
