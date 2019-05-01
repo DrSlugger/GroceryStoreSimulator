@@ -32,7 +32,7 @@ namespace OnlineOrder.App_Code
         /**
         * Open the connection to the database
         */
-        private static void OpenConnection()
+        public static void OpenConnection()
         {
             System.Configuration.ConnectionStringSettings strConn;
             strConn = ReadConnectionString();
