@@ -30,7 +30,7 @@ namespace OnlineOrder.App_Code
         {
             foreach (SelectedProduct p in selectedProducts)
             {
-                if (p.SKU == product.SKU)
+                if (p.productID == product.productID)
                 {
                     selectedProducts.Remove(p);
                 }
@@ -42,7 +42,7 @@ namespace OnlineOrder.App_Code
             bool isInCart = false;
             foreach (SelectedProduct p in selectedProducts)
             {
-                if (p.SKU == product.SKU)
+                if (p.productID == product.productID)
                 {
                     isInCart = true;
                     break;

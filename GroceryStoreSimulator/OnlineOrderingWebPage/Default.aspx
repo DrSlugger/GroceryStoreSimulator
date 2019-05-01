@@ -14,10 +14,10 @@
     <div class="box">
         <asp:Image ID="imgGroceries" runat="server" ImageUrl="~/App_Themes/DefaultTheme/Groceries.bmp" />
         <h3>Enter your Loyalty Number</h3>
-        <asp:TextBox ID="txt_LoyaltyNumber" runat="server"></asp:TextBox>
+        <asp:TextBox ID="tbxLoyaltyNumber" runat="server"></asp:TextBox>
         <h3>Select a Store</h3>
-        <asp:DropDownList ID="ddl_Stores" runat="server"></asp:DropDownList>
-        <asp:Button ID="btn_Submit" runat="server" Text="Submit" OnClick="btn_Submit_Click" />
+        <asp:DropDownList ID="drpStores" runat="server"></asp:DropDownList>
+        <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
     </div>
     </form>
 </body>

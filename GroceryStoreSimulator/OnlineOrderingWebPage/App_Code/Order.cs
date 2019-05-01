@@ -19,7 +19,7 @@ namespace OnlineOrder.App_Code
 
         public int orderID { get { return mOrderID; } set { mOrderID = value; } }
         public string loyaltyID { get { return mLoyaltyID; } set { mLoyaltyID = value; } }
-        public Store store { get { return mStore } set { mStore = value; } }
+        public Store store { get { return mStore; } set { mStore = value; } }
         public int statusID { get { return mStatusID; } set { mStatusID = value; } }
         public DeliveryAddress deliveryAddress { get { return mDeliveryAddress; } set { mDeliveryAddress = value; } }
 

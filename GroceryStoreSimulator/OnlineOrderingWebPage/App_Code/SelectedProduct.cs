@@ -6,7 +6,7 @@ using System.Web;
 /// <summary>
 /// Summary description for SelectedProduct
 /// </summary>
-namespace OnlineOrderApp_Code
+namespace OnlineOrder.App_Code
 {
     public class SelectedProduct : Product
     {
@@ -14,19 +14,19 @@ namespace OnlineOrderApp_Code
 
         public int quantity { get { return mQuantity; } set { mQuantity = value; } }
 
-        public SelectedProduct(Product product, int quantity) : base(product.SKU, product.brand, product.description, product.price)
+        public SelectedProduct(Product product, int quantity) : base(product.productID, product.brand, product.description, product.price)
         {
             this.brand = product.brand;
-            this.SKU = product.SKU;
+            this.productID = product.productID;
             this.description = description;
             this.price = price;
             this.quantity = quantity;
         }
 
-        public SelectedProduct(string brand, string SKU, string description, double price, int quantity) : base(brand, SKU, description, price, quantity)
+        public SelectedProduct(string brand, int productID, string SKU, string description, double price, int quantity) : base(productID, brand, description, price)
         {
             this.brand = brand;
-            this.SKU = SKU;
+            this.productID = productID;
             this.description = description;
             this.price = price;
             this.quantity = quantity;

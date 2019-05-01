@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using OnlineOrder.App_Code;
 
 public partial class Order : System.Web.UI.Page
 {
@@ -36,7 +39,48 @@ public partial class Order : System.Web.UI.Page
 
 //        lbl_TotalCost.Text = ;// Order.CalculatePrice(), or something?
     }
+    /**
+    private void LoadListBox()
+    {
+        DataTable products = new DataTable();
 
+        SqlConnection conn = (SqlConnection)Session["ConnectionObject"];
+
+        List<Product> listProducts = new List<Product>();
+
+        using (conn)
+        {
+            try
+            {
+                SqlDataAdapter adapter = new SqlDataAdapter("SELECT DISTINCT Brand, Description FROM tProduct P INNER JOIN tBrand B " +
+                "ON P.BrandID = B.BrandID WHERE LEN(Description) > 0", conn);
+                adapter.Fill(products);
+
+                for (int i = 0; i < products.Rows.Count; i++)
+                {
+                    DataRow data = products.Rows[i];
+
+
+                }
+
+                drpStores.DataSource = stores;
+                drpStores.DataTextField = "Store";
+                drpStores.DataValueField = "StoreID";
+                drpStores.DataBind();
+            }
+            catch (Exception ex)
+            {
+                // Handle the error
+                Response.Write(ex.Message);
+            }
+
+        }
+
+        // Add the initial item - you can add this even if the options from the
+        // db were not successfully loaded
+        drpStores.Items.Insert(0, new ListItem("<Select Store>", "0"));
+    }
+    **/
     // TODO: Change webconfig.aspx to not display code in errors (debug mode).
 
     // Functionality to remove an item from the cart?
