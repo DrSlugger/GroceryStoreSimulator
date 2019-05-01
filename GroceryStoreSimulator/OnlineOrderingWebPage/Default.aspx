@@ -5,11 +5,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Online Ordering</title>
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville|Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
     <form id="form1" runat="server">
-    <div>
+    <div class="box2"><h1>Welcome to the Grocery Store Simulator!</h1></div>
+    <div class="box">
         <asp:Image ID="imgGroceries" runat="server" ImageUrl="~/App_Themes/DefaultTheme/Groceries.bmp" />
+        <h3>Enter your Loyalty Number</h3>
+        <asp:TextBox ID="txt_LoyaltyNumber" runat="server"></asp:TextBox>
+        <h3>Select a Store</h3>
+        <asp:DropDownList ID="ddl_Stores" runat="server"></asp:DropDownList>
+        <asp:Button ID="btn_Submit" runat="server" Text="Submit" OnClick="btn_Submit_Click" />
     </div>
     </form>
 </body>
