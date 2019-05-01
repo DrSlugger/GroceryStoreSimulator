@@ -10,13 +10,13 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div class="box2"><h1>Welcome to the Grocery Store Simulator!</h1></div>
+    <div class="box2"><h1>Welcome to Marbatch Mart</h1></div>
     <div class="box">
         <asp:Image ID="imgGroceries" runat="server" ImageUrl="~/App_Themes/DefaultTheme/Groceries.bmp" />
         <h3>Enter your Loyalty Number</h3>
         <asp:TextBox ID="tbxLoyaltyNumber" runat="server"></asp:TextBox>
         <h3>Select a Store</h3>
-        <asp:DropDownList ID="drpStores" runat="server"></asp:DropDownList>
+        <asp:DropDownList ID="drpStores" runat="server" AutoPostBack="false"></asp:DropDownList>
         <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />
     </div>
     </form>

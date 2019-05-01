@@ -28,7 +28,7 @@ public partial class Results : System.Web.UI.Page
         bltDetailsList.Items.Add("Your Loyalty Number: " + order.loyaltyID);
         foreach (SelectedProduct p in order.shoppingCart.selectedProducts)
         {
-            description = p.brandDescription + " ; Quantity: " + p.quantity + "; Price Per Unit: " + p.price;
+            description = "Item: " + p.brandDescription + "; Quantity: " + p.quantity + "; Price Per Unit: " + p.price;
             bltDetailsList.Items.Add(description);
         }
         bltDetailsList.Items.Add("Final Price: $" + order.finalPrice);

@@ -21,8 +21,11 @@ using OnlineOrder.App_Code;
 public partial class _Default : System.Web.UI.Page {
     protected void Page_Load(object sender, EventArgs e)
     {
-        OpenConnection();
-        PopulateDropDown();
+        if (!IsPostBack)
+        {
+            OpenConnection();
+            PopulateDropDown();
+        }
     }
 
     // Stores the user's Loyalty ID and choice of grocery store.
@@ -104,14 +107,12 @@ public partial class _Default : System.Web.UI.Page {
         System.Data.SqlClient.SqlConnection conn;
         conn = new System.Data.SqlClient.SqlConnection(strConn.ConnectionString);
         Session.Add("ConnectionObject", conn);
-        // This could go wrong in so many ways...
         try
         {
             conn.Open();
         }
         catch (Exception ex)
         {
-            // Miserable error handling...
             Response.Write(ex.Message);
         }
     }

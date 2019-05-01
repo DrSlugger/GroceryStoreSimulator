@@ -40,7 +40,11 @@ public partial class Order : System.Web.UI.Page
         }
     }
 
-    // 
+    /// <summary>
+    /// Updates the quantity label so the user can see how much they have selected for that item
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void lstCart_SelectedIndexChanged(object sender, EventArgs e)
     {
         string product = lstCart.SelectedItem.Text;
@@ -56,7 +60,11 @@ public partial class Order : System.Web.UI.Page
         }
         lblCurrentQuantity.Text = sp.quantity.ToString();
     }
-
+    /// <summary>
+    /// Submission event handler to process the order information and create a record in the database
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
         shoppingCart = (ShoppingCart)Session["ShoppingCart"];
@@ -70,14 +78,29 @@ public partial class Order : System.Web.UI.Page
         Response.Redirect("Results.aspx");
     }
 
+    /// <summary>
+    /// Event handler to add to the cart
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     protected void btnAddToCart_Click(object sender, EventArgs e)
     {
-        AddToCart(lstItems);
-        MoveToListBox(lstItems, lstCart);
-        tbxQuantity.Text = "";
-        lblTotalCost.Text = shoppingCart.CalculateTotal().ToString();
+        if (tbxQuantity.Text.Length > 0 && Convert.ToInt32(tbxQuantity.Text) > 0)
+        {
+            if (lstItems.SelectedIndex != 1)
+            {
+                AddToCart(lstItems);
+                MoveToListBox(lstItems, lstCart);
+                tbxQuantity.Text = "";
+                lblTotalCost.Text = shoppingCart.CalculateTotal().ToString();
+            }
+        }
     }
 
+    /// <summary>
+    /// Submits the order to the database using two different sprocs
+    /// </summary>
+    /// <param name="order"></param>
     private void SubmitOrder(OnlineOrder.App_Code.Order order)
     {
         OpenConnection();
@@ -89,6 +112,7 @@ public partial class Order : System.Web.UI.Page
         cmd.CommandType = CommandType.StoredProcedure;
         cmd.Connection = conn;
 
+        // Creates the query using the sproc to create a record on the tOrder table
         cmd.Parameters.Add(new SqlParameter("LoyaltyID", order.loyaltyID));
         cmd.Parameters.Add(new SqlParameter("StoreID", order.store.storeID));
         cmd.Parameters.Add(new SqlParameter("OrderStatusID", 1));
@@ -110,6 +134,7 @@ public partial class Order : System.Web.UI.Page
 
         cmd.CommandText = "spAddOrderDetailRecord";
 
+        // Code below creates records in the tOrderDetails table
         foreach (SelectedProduct p in order.shoppingCart.selectedProducts) {
             cmd.Parameters.Clear();
             cmd.Parameters.Add(new SqlParameter("pOrderID", (int)Session["OrderID"]));
@@ -122,6 +147,9 @@ public partial class Order : System.Web.UI.Page
         
     }
 
+    /// <summary>
+    /// Loads the Items listbox
+    /// </summary>
     private void LoadListBox()
     {
         DataTable products = new DataTable();
@@ -153,7 +181,9 @@ public partial class Order : System.Web.UI.Page
 
         }
     }
-
+    /// <summary>
+    /// Creates a products list that will be used to hold every product in the table
+    /// </summary>
     private void LoadProducts()
     {
         OpenConnection();
@@ -186,7 +216,10 @@ public partial class Order : System.Web.UI.Page
             }
         }
     }
-
+    /// <summary>
+    /// Adds whatever is selected in the listbox to the cart
+    /// </summary>
+    /// <param name="listBox"></param>
     private void AddToCart(ListBox listBox)
     {
         shoppingCart = (ShoppingCart)Session["ShoppingCart"];
@@ -213,16 +246,20 @@ public partial class Order : System.Web.UI.Page
             }
         }
     }
-
+    /// <summary>
+    /// Removes whatever is selected in the listbox from the cart
+    /// </summary>
+    /// <param name="listBox"></param>
     private void RemoveFromCart(ListBox listBox)
     {
-        if (listBox.SelectedIndex != 1)
-        {
-            int itemToRemove = listBox.SelectedIndex;
-            shoppingCart.RemoveProduct(itemToRemove);
-        }
-    }
+        shoppingCart = (ShoppingCart)Session["ShoppingCart"];
 
+        shoppingCart.RemoveProduct(Convert.ToInt32(listBox.SelectedItem.Value));
+    }
+    /// <summary>
+    /// Method to change the quantity
+    /// </summary>
+    /// <param name="listBox"></param>
     private void ChangeQuantity(ListBox listBox)
     {
         if (listBox.SelectedIndex != 1)
@@ -248,6 +285,7 @@ public partial class Order : System.Web.UI.Page
             listBoxTwo.SelectedIndex = -1;
         }
     }
+
 
     /*
     * Below are methods for the database connection
