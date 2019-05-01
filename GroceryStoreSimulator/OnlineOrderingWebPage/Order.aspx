@@ -20,7 +20,9 @@
             <br /><br />
             <asp:Button ID="btnAddToCart" runat="server" Text="Add to cart" OnClick="btnAddToCart_Click" />
             <h3>Items in cart</h3>
-            <asp:ListBox ID="lstCart" runat="server" Height="310px" Width="346px"></asp:ListBox>
+            <asp:ListBox ID="lstCart" runat="server" Height="310px" Width="346px" OnSelectedIndexChanged="lstCart_SelectedIndexChanged" AutoPostBack="True" ></asp:ListBox><br />
+            <h5>Current Quantity</h5>
+            <asp:Label ID="lblCurrentQuantity" runat="server" Text="[Quantity]"></asp:Label>
             <h5>Current total: </h5><asp:Label ID="lblTotalCost" runat="server" Text="[Total]"></asp:Label>
             <br /><br />
             <asp:Button ID="btnSubmit" runat="server" Text="Submit" OnClick="btnSubmit_Click" />

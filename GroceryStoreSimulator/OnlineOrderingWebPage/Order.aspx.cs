@@ -11,29 +11,56 @@ using OnlineOrder.App_Code;
 public partial class Order : System.Web.UI.Page
 {
     private ShoppingCart shoppingCart;
-    private List<Product> products;
+    private Dictionary<int, Product> products;
     protected void Page_Load(object sender, EventArgs e)
     {
         //        ShoppingCart cart = new ShoppingCart();
         //        lbx_Items.Items.Add();
-        OpenConnection();
-        LoadProducts();
-        LoadListBox();
+        if (!IsPostBack)
+        {
+            OpenConnection();
+            LoadListBox();
+            LoadProducts();
+            Session["Products"] = products;
+            shoppingCart = new ShoppingCart();
+            Session["ShoppingCart"] = shoppingCart;
+        }
+    }
 
-        shoppingCart = new ShoppingCart();
+    protected void lstCart_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string product = lstCart.SelectedItem.Text;
+        shoppingCart = (ShoppingCart)Session["ShoppingCart"];
+
+        SelectedProduct sp = new SelectedProduct();
+        foreach (SelectedProduct p in shoppingCart.selectedProducts)
+        {
+            if (product == p.brandDescription)
+            {
+                sp = p;
+            }
+        }
+        lblCurrentQuantity.Text = sp.quantity.ToString();
     }
 
     protected void btnSubmit_Click(object sender, EventArgs e)
     {
+        shoppingCart = (ShoppingCart)Session["ShoppingCart"];
         // Add all of the items in the cart to the order...
         // ... or whatever the design was.
+        Store store = (Store)Session["Store"];
+        string loyalty = (string)Session["LoyaltyNumber"];
+        OnlineOrder.App_Code.Order order = new OnlineOrder.App_Code.Order(loyalty, store, 1, shoppingCart.CalculateTotal());
+        Session["Order"] = order;
         Response.Redirect("Results.aspx");
     }
 
     protected void btnAddToCart_Click(object sender, EventArgs e)
     {
-        MoveToListBox(lstItems, lstCart);
         AddToCart(lstItems);
+        MoveToListBox(lstItems, lstCart);
+        tbxQuantity.Text = "";
+        lblTotalCost.Text = shoppingCart.CalculateTotal().ToString();
     }
 
     private void LoadListBox()
@@ -69,15 +96,16 @@ public partial class Order : System.Web.UI.Page
     }
     private void LoadProducts()
     {
+        OpenConnection();
         SqlConnection conn = (SqlConnection)Session["ConnectionObject"];
 
-        products = new List<Product>();
+        products = new Dictionary<int, Product>();
 
         using (conn)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT DISTINCT ProductID, Brand + ' ' + Description AS BrandDescription," +
+                using (SqlCommand cmd = new SqlCommand("SELECT DISTINCT ProductID AS ID, Brand + ' ' + Description AS BrandDescription," +
                     " InitialPricePerSellableUnit AS Price FROM tProduct P INNER JOIN tBrand B " +
                 "ON P.BrandID = B.BrandID ORDER BY BrandDescription ASC", conn))
                 {
@@ -86,8 +114,8 @@ public partial class Order : System.Web.UI.Page
                         int i = 0;
                         while (reader.Read())
                         {
-                            products.Add(new Product((int)reader.GetOrdinal("ProductID"),
-                            reader.GetOrdinal("BrandDescription").ToString(), Convert.ToDouble(reader.GetOrdinal("Price"))));
+                            products.Add(Convert.ToInt32(reader.GetValue(reader.GetOrdinal("ID"))), new Product(Convert.ToInt32(reader.GetValue(reader.GetOrdinal("ID"))),
+                            Convert.ToString(reader.GetValue(reader.GetOrdinal("BrandDescription"))), Convert.ToDouble(reader.GetValue(reader.GetOrdinal("Price")))));
                         }
                     }
                 }
@@ -102,17 +130,19 @@ public partial class Order : System.Web.UI.Page
 
     private void AddToCart(ListBox listBox)
     {
+        shoppingCart = (ShoppingCart)Session["ShoppingCart"];
+        products = (Dictionary<int, Product>)Session["Products"];
         if (listBox.SelectedIndex != -1) // If statement makes sure an index is selected in the correct box
         {
-            int itemToAdd = listBox.SelectedIndex;
+            int itemToAdd = Convert.ToInt32(listBox.SelectedItem.Value);
             Product productToAdd = new Product();
             bool productFound = false;
-            foreach (Product p in products)
+            foreach (KeyValuePair<int, Product> p in products)
             {
-                if (p.productID == itemToAdd)
+                if (p.Key == itemToAdd)
                 {
                     productFound = true;
-                    productToAdd = p;
+                    productToAdd = p.Value;
                     break;
                 }
             }
@@ -120,9 +150,7 @@ public partial class Order : System.Web.UI.Page
             {
                 SelectedProduct product = new SelectedProduct(productToAdd, Convert.ToInt32(tbxQuantity.Text));
                 shoppingCart.AddProduct(product);
-            } else
-            {
-                Response.Write("Please enter a quantity");
+                Session["ShoppingCart"] = shoppingCart;
             }
         }
     }
@@ -156,8 +184,8 @@ public partial class Order : System.Web.UI.Page
         if (listBox.SelectedIndex != -1) // If statement makes sure an index is selected in the correct box
         {
             ListItem itemToAdd = listBox.SelectedItem;
-            listBox.Items.Remove(itemToAdd);
             listBoxTwo.Items.Add(itemToAdd);
+            listBox.Items.Remove(itemToAdd);
             listBox.SelectedIndex = -1; // Deselects all items in the two boxes
             listBoxTwo.SelectedIndex = -1;
         }

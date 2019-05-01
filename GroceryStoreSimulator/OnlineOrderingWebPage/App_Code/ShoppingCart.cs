@@ -10,10 +10,18 @@ namespace OnlineOrder.App_Code
 {
     public class ShoppingCart
     {
-        private List<SelectedProduct> selectedProducts;
+        private List<SelectedProduct> mSelectedProducts;
+
+        public List<SelectedProduct> selectedProducts
+        {
+            get
+            {
+                return mSelectedProducts;
+            }
+        }
         public ShoppingCart()
         {
-            selectedProducts = new List<SelectedProduct>();
+            mSelectedProducts = new List<SelectedProduct>();
         }
 
         public double CalculateTotal()
@@ -21,7 +29,7 @@ namespace OnlineOrder.App_Code
             double finalPrice = 0;
             foreach (SelectedProduct p in selectedProducts)
             {
-                finalPrice = p.quantity * p.price;
+                finalPrice += p.quantity * p.price;
             }
             return finalPrice;
         }
