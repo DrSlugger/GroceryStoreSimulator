@@ -24,5 +24,17 @@ namespace OnlineOrder.App_Code
             this.brandDescription = brandDescription;
             this.price = price;
         }
+
+        public Product(Product product)
+        {
+            this.productID = productID;
+            this.brandDescription = brandDescription;
+            this.price = price;
+        }
+
+        public Product()
+        {
+
+        }
     }
 }

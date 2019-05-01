@@ -11,12 +11,13 @@ using OnlineOrder.App_Code;
 public partial class Order : System.Web.UI.Page
 {
     private ShoppingCart shoppingCart;
-    private Dictionary<int, Product> products;
+    private List<Product> products;
     protected void Page_Load(object sender, EventArgs e)
     {
         //        ShoppingCart cart = new ShoppingCart();
         //        lbx_Items.Items.Add();
         OpenConnection();
+        LoadProducts();
         LoadListBox();
 
         shoppingCart = new ShoppingCart();
@@ -31,29 +32,62 @@ public partial class Order : System.Web.UI.Page
 
     protected void btnAddToCart_Click(object sender, EventArgs e)
     {
-        MoveToListBox(lstItems, lstCart); 
+        MoveToListBox(lstItems, lstCart);
+        AddToCart(lstItems);
     }
 
     private void LoadListBox()
     {
-        SqlConnection conn = (SqlConnection)Session["ConnectionObject"];
+        DataTable products = new DataTable();
 
-        products = new Dictionary<int, Product>();
+        OpenConnection();
+
+        SqlConnection conn = (SqlConnection)Session["ConnectionObject"];
 
         using (conn)
         {
             try
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT DISTINCT ProductID, Brand + ' ' + Description AS BrandDescription, InitialItemPrice FROM tProduct P INNER JOIN tBrand B " +
-                "ON P.BrandID = B.BrandID", conn))
+                SqlDataAdapter adapter = new SqlDataAdapter("SELECT DISTINCT ProductID, Brand + ' ' + Description AS BrandDescription" +
+                    " FROM tProduct P INNER JOIN tBrand B " +
+                "ON P.BrandID = B.BrandID ORDER BY BrandDescription ASC", conn);
+                adapter.Fill(products);
+
+                lstItems.DataSource = products;
+                lstItems.DataTextField = "BrandDescription";
+                lstItems.DataValueField = "ProductID";
+                lstItems.DataBind();
+
+            }
+            catch (Exception ex)
+            {
+                // Handle the error
+                Response.Write(ex.Message);
+            }
+
+        }
+    }
+    private void LoadProducts()
+    {
+        SqlConnection conn = (SqlConnection)Session["ConnectionObject"];
+
+        products = new List<Product>();
+
+        using (conn)
+        {
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT DISTINCT ProductID, Brand + ' ' + Description AS BrandDescription," +
+                    " InitialPricePerSellableUnit AS Price FROM tProduct P INNER JOIN tBrand B " +
+                "ON P.BrandID = B.BrandID ORDER BY BrandDescription ASC", conn))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         int i = 0;
                         while (reader.Read())
                         {
-                            products.Add((int)reader.GetOrdinal("ProductID"), new Product((int)reader.GetOrdinal("ProductID"),
-                            reader.GetOrdinal("BrandDescription").ToString(), Convert.ToDouble(reader.GetOrdinal("InitialItemPrice"))));
+                            products.Add(new Product((int)reader.GetOrdinal("ProductID"),
+                            reader.GetOrdinal("BrandDescription").ToString(), Convert.ToDouble(reader.GetOrdinal("Price"))));
                         }
                     }
                 }
@@ -71,8 +105,25 @@ public partial class Order : System.Web.UI.Page
         if (listBox.SelectedIndex != -1) // If statement makes sure an index is selected in the correct box
         {
             int itemToAdd = listBox.SelectedIndex;
-            SelectedProduct product = new SelectedProduct(products[itemToAdd], Convert.ToInt32(tbxQuantity.Text));
-            shoppingCart.AddProduct(product);
+            Product productToAdd = new Product();
+            bool productFound = false;
+            foreach (Product p in products)
+            {
+                if (p.productID == itemToAdd)
+                {
+                    productFound = true;
+                    productToAdd = p;
+                    break;
+                }
+            }
+            if (productFound == true)
+            {
+                SelectedProduct product = new SelectedProduct(productToAdd, Convert.ToInt32(tbxQuantity.Text));
+                shoppingCart.AddProduct(product);
+            } else
+            {
+                Response.Write("Please enter a quantity");
+            }
         }
     }
 
@@ -90,7 +141,7 @@ public partial class Order : System.Web.UI.Page
         if (listBox.SelectedIndex != 1)
         {
             int itemToRemove = listBox.SelectedIndex;
-            shoppingCart.ChangeQuanity(itemToRemove, Convert.ToInt32(tbxQuantity.Text)
+            shoppingCart.ChangeQuanity(itemToRemove, Convert.ToInt32(tbxQuantity.Text));
         }
     }
 

@@ -29,5 +29,10 @@ namespace OnlineOrder.App_Code
             this.price = price;
             this.quantity = quantity;
         }
+
+        public SelectedProduct()
+        {
+
+        }
     }
 }
