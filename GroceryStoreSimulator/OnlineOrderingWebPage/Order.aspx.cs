@@ -98,13 +98,13 @@ public partial class Order : System.Web.UI.Page
             Response.Write(ex.Message);
         }
 
-        cmd.CommandText = "spAddOrderDetail";
+        cmd.CommandText = "spAddOrderDetailRecord";
 
         foreach (SelectedProduct p in order.shoppingCart.selectedProducts) {
             cmd.Parameters.Clear();
             cmd.Parameters.Add(new SqlParameter("pOrderID", (int)Session["OrderID"]));
-            cmd.Parameters.Add(new SqlParameter("pProductID", (int)p.productID));
-            cmd.Parameters.Add(new SqlParameter("pQuantity", (int)p.quantity));
+            cmd.Parameters.Add(new SqlParameter("pProductID", p.productID));
+            cmd.Parameters.Add(new SqlParameter("pQuantity", p.quantity));
             cmd.Parameters.Add(new SqlParameter("pTotalPrice", Convert.ToDecimal(p.quantity * p.price)));
             cmd.Parameters.Add(new SqlParameter("pUnavailableWhenOrderWasFilled", Convert.ToBoolean(0)));
             cmd.ExecuteNonQuery();
