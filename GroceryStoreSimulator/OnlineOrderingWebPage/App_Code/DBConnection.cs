@@ -32,7 +32,7 @@ namespace OnlineOrder.App_Code
         /**
         * Open the connection to the database
         */
-        public static void OpenConnection()
+        public static System.Data.SqlClient.SqlConnection OpenConnection()
         {
             System.Configuration.ConnectionStringSettings strConn;
             strConn = ReadConnectionString();
@@ -40,16 +40,7 @@ namespace OnlineOrder.App_Code
 
             System.Data.SqlClient.SqlConnection conn;
             conn = new System.Data.SqlClient.SqlConnection(strConn.ConnectionString);
-            Session.Add("ConnectionObject", conn);
-            // This could go wrong in so many ways...
-            try
-            {
-                conn.Open();
-            }
-            catch (Exception ex)
-            {
-
-            }
+            return conn;
         }
 
     }
