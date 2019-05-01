@@ -6,16 +6,19 @@ using System.Web;
 /// <summary>
 /// Creates a store object
 /// </summary>
-public class Store
+namespace OnlineOrder.App_Code
 {
-    private string mStoreName;
-    private int mStoreID;
-
-    public string storeName { get { return mStoreName; } set { mStoreName = value; } }
-    public int storeID { get { return mStoreID; } set { mStoreID= value; } }
-    public Store(string storeName, int storeID)
+    public class Store
     {
-        this.storeName = storeName;
-        this.storeID = storeID;
+        private string mStoreName;
+        private int mStoreID;
+
+        public string storeName { get { return mStoreName; } set { mStoreName = value; } }
+        public int storeID { get { return mStoreID; } set { mStoreID = value; } }
+        public Store(string storeName, int storeID)
+        {
+            this.storeName = storeName;
+            this.storeID = storeID;
+        }
     }
 }

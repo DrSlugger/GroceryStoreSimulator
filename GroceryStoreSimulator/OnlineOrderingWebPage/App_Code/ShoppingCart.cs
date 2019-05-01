@@ -6,49 +6,52 @@ using System.Web;
 /// <summary>
 /// Allows us to create an object for the ShoppingCart in the webform
 /// </summary>
-public class ShoppingCart
+namespace OnlineOrder.App_Code
 {
-    private List<SelectedProduct> selectedProducts;
-    public ShoppingCart()
+    public class ShoppingCart
     {
-        selectedProducts = new List<SelectedProduct>();
-    }
-
-    public double CalculateTotal()
-    {
-        double finalPrice = 0;
-        foreach (SelectedProduct p in selectedProducts)
+        private List<SelectedProduct> selectedProducts;
+        public ShoppingCart()
         {
-            finalPrice = p.quantity * p.price;
+            selectedProducts = new List<SelectedProduct>();
         }
-        return finalPrice;
-    }
 
-    public void RemoveProduct(SelectedProduct product)
-    {
-        foreach (SelectedProduct p in selectedProducts)
+        public double CalculateTotal()
         {
-            if (p.SKU == product.SKU)
+            double finalPrice = 0;
+            foreach (SelectedProduct p in selectedProducts)
             {
-                selectedProducts.Remove(p);
+                finalPrice = p.quantity * p.price;
+            }
+            return finalPrice;
+        }
+
+        public void RemoveProduct(SelectedProduct product)
+        {
+            foreach (SelectedProduct p in selectedProducts)
+            {
+                if (p.SKU == product.SKU)
+                {
+                    selectedProducts.Remove(p);
+                }
             }
         }
-    }
 
-    public void AddProduct(SelectedProduct product)
-    {
-        bool isInCart = false;
-        foreach (SelectedProduct p in selectedProducts)
+        public void AddProduct(SelectedProduct product)
         {
-            if (p.SKU == product.SKU)
+            bool isInCart = false;
+            foreach (SelectedProduct p in selectedProducts)
             {
-                isInCart = true;
-                break;
+                if (p.SKU == product.SKU)
+                {
+                    isInCart = true;
+                    break;
+                }
             }
-        }
-        if (isInCart == false)
-        {
-            selectedProducts.Add(product);
+            if (isInCart == false)
+            {
+                selectedProducts.Add(product);
+            }
         }
     }
 }
