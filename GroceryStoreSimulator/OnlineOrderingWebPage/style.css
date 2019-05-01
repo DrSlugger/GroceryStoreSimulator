@@ -1,0 +1,53 @@
+﻿body {
+    font-family: 'Libre Baskerville', serif;
+    background-color: #ECEFF4;
+    color: #4C566A;
+}
+
+a {
+    font-family: 'Roboto', sans-serif;
+    font: 12px;
+    color: #81A1C1;
+    text-decoration: none;
+}
+
+table {
+    width: 100%;
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    height: 50px;
+    text-align: left;
+}
+
+td {
+    font-family: 'Roboto', sans-serif;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.main {
+    margin-left: 13%;
+    margin-right: 20%;
+}
+
+.box {
+    font-family: 'Roboto', sans-serif;
+    font: 11px;
+    background-color: #FDF6E3;
+    border: 2px solid #4C566A;
+    padding: 2% 2% 2% 2%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.box2 {
+    margin-left: 20%;
+    margin-right: 20%;
+}
