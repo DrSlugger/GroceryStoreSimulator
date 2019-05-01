@@ -26,11 +26,11 @@ namespace OnlineOrder.App_Code
             return finalPrice;
         }
 
-        public void RemoveProduct(SelectedProduct product)
+        public void RemoveProduct(int removeProduct)
         {
             foreach (SelectedProduct p in selectedProducts)
             {
-                if (p.productID == product.productID)
+                if (p.productID == removeProduct)
                 {
                     selectedProducts.Remove(p);
                 }
@@ -51,6 +51,23 @@ namespace OnlineOrder.App_Code
             if (isInCart == false)
             {
                 selectedProducts.Add(product);
+            }
+        }
+
+        public void ChangeQuanity(int product, int quantity)
+        {
+            bool quantityChanged = false;
+            foreach (SelectedProduct p in selectedProducts)
+            {
+                if (p.productID == product)
+                {
+                    p.quantity = quantity;
+                    quantityChanged = true;
+                }
+                if (quantityChanged)
+                {
+                    break;
+                }
             }
         }
     }
