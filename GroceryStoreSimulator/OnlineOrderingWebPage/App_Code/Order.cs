@@ -1,4 +1,12 @@
-﻿using System;
+﻿/* Authors: Kyle Marler, Evan Batsch
+ * Class: Web Server Application Development
+ * Assignment: Final Project
+ * Date due: 2019-05-01
+ * Description: This class stores information about the user's order, provided in Order.aspx.
+ * ...It is used as a session variable.
+ * Other: N/A
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;

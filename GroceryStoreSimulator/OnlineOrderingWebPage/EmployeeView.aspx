@@ -14,11 +14,11 @@
         <div class="box">
             <h3>Pending Orders</h3>
             <h5>Mark orders as "delivered" here.</h5>
-            <asp:CheckBoxList ID="CheckBoxList1" runat="server"></asp:CheckBoxList>
+            <asp:CheckBoxList ID="cblPendingOrders" runat="server"></asp:CheckBoxList>
             <asp:Button ID="btn_SubmitCheckedOrders" runat="server" Text="Submit" />
             <h3>System Report</h3>
             <h5>Order History</h5>
-            <asp:BulletedList ID="BulletedList1" runat="server"></asp:BulletedList>
+            <asp:BulletedList ID="blstOrderHistory" runat="server"></asp:BulletedList>
         </div>
     </form>
 </body>

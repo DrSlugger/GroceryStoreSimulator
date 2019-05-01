@@ -1,4 +1,12 @@
-﻿using System;
+﻿/* Authors: Kyle Marler, Evan Batsch
+ * Class: Web Server Application Development
+ * Assignment: Final Project
+ * Date due: 2019-05-01
+ * Description: This class describes a product that is drawn from the database and stored in lstItems in Order.aspx.
+ * Other: N/A
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
