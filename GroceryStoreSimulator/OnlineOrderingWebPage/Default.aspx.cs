@@ -20,7 +20,7 @@ public partial class _Default : System.Web.UI.Page {
     {
         //        cart.loyaltyID.set(txt_LoyaltyNumber.Text);
         //        cart.storeID.set(ddl_Stores.SelectedValue);
-        Store store = new Store(drpStores.SelectedItem.Text, Convert.ToInt32(drpStores.SelectedValue));
+        Store store = new Store(drpStores.SelectedItem.Text, Convert.ToInt32(drpStores.SelectedItem.Value));
         Session["SelectedStore"] = store;
         Session["LoyaltyNumber"] = tbxLoyaltyNumber.Text;
         Response.Redirect("Order.aspx");

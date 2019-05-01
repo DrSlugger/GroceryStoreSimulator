@@ -12,6 +12,8 @@ public partial class Order : System.Web.UI.Page
 {
     private ShoppingCart shoppingCart;
     private Dictionary<int, Product> products;
+    private readonly SqlConnection conn;
+
     protected void Page_Load(object sender, EventArgs e)
     {
         //        ShoppingCart cart = new ShoppingCart();
@@ -48,9 +50,12 @@ public partial class Order : System.Web.UI.Page
         shoppingCart = (ShoppingCart)Session["ShoppingCart"];
         // Add all of the items in the cart to the order...
         // ... or whatever the design was.
-        Store store = (Store)Session["Store"];
+        Store store = (Store)Session["SelectedStore"];
         string loyalty = (string)Session["LoyaltyNumber"];
-        OnlineOrder.App_Code.Order order = new OnlineOrder.App_Code.Order(loyalty, store, 1, shoppingCart.CalculateTotal());
+        OnlineOrder.App_Code.Order order = new OnlineOrder.App_Code.Order(loyalty, store, 1, shoppingCart.CalculateTotal(), shoppingCart);
+
+        SubmitOrder(order);
+        order.orderID = (int)Session["OrderID"];
         Session["Order"] = order;
         Response.Redirect("Results.aspx");
     }
@@ -61,6 +66,37 @@ public partial class Order : System.Web.UI.Page
         MoveToListBox(lstItems, lstCart);
         tbxQuantity.Text = "";
         lblTotalCost.Text = shoppingCart.CalculateTotal().ToString();
+    }
+
+    private void SubmitOrder(OnlineOrder.App_Code.Order order)
+    {
+        OpenConnection();
+
+        SqlConnection conn = (SqlConnection)Session["ConnectionObject"];
+
+        SqlCommand cmd = new SqlCommand();
+        cmd.CommandText = "spAddOrder";
+        cmd.CommandType = CommandType.StoredProcedure;
+        cmd.Connection = conn;
+
+        cmd.Parameters.Add(new SqlParameter("LoyaltyID", order.loyaltyID));
+        cmd.Parameters.Add(new SqlParameter("StoreID", order.store.storeID));
+        cmd.Parameters.Add(new SqlParameter("OrderStatusID", 1));
+        cmd.Parameters.Add(new SqlParameter("DeliveryCharge", Convert.ToDecimal(0.00)));
+
+        cmd.Parameters.Add("@OrderID", SqlDbType.Int, 0, "OrderID");
+        cmd.Parameters["@OrderID"].Direction = ParameterDirection.Output;
+
+        try
+        {
+            int orderID;
+            cmd.ExecuteNonQuery();
+            orderID = (int)cmd.Parameters["@OrderID"].Value;
+            Session["OrderID"] = orderID;
+        } catch (Exception ex)
+        {
+            Response.Write(ex.Message);
+        }
     }
 
     private void LoadListBox()
@@ -111,7 +147,6 @@ public partial class Order : System.Web.UI.Page
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        int i = 0;
                         while (reader.Read())
                         {
                             products.Add(Convert.ToInt32(reader.GetValue(reader.GetOrdinal("ID"))), new Product(Convert.ToInt32(reader.GetValue(reader.GetOrdinal("ID"))),

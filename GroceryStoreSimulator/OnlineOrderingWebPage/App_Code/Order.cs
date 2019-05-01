@@ -15,20 +15,28 @@ namespace OnlineOrder.App_Code
         private Store mStore;
         private int mStatusID;
         private double mFinalPrice;
+        private ShoppingCart mShoppingCart;
 
         public int orderID { get { return mOrderID; } set { mOrderID = value; } }
         public string loyaltyID { get { return mLoyaltyID; } set { mLoyaltyID = value; } }
         public Store store { get { return mStore; } set { mStore = value; } }
         public int statusID { get { return mStatusID; } set { mStatusID = value; } }
+        public ShoppingCart shoppingCart { get { return mShoppingCart; } set { mShoppingCart = value; } }
 
         public double finalPrice { get { return mFinalPrice; } set { mFinalPrice = value; } }
 
-        public Order(string loyaltyID, Store store, int statusID, double finalPrice)
+        public Order(string loyaltyID, Store store, int statusID, double finalPrice, ShoppingCart shoppingCart)
         {
             this.loyaltyID = loyaltyID;
             this.store = store;
             this.statusID = statusID;
             this.finalPrice = finalPrice;
+            this.shoppingCart = shoppingCart;
+        }
+
+        public Order()
+        {
+
         }
     }
 }
